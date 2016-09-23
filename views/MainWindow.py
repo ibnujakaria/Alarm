@@ -28,10 +28,13 @@ class MainWindow (QtGui.QWidget):
         # surprise dialog
         self.surpriseDialog = SurpriseDialog(self)
 
-        self.thread = threading.Thread(target=self.updateClock)
-        self.thread.start()
-
         self.bombed.connect(self.boom)
+
+        try:
+            self.thread = threading.Thread(target=self.updateClock)
+            self.thread.start()
+        except:
+            print("Some erros on thread.")
 
     def settingPosition(self):
         desktopGeometry = QtGui.QDesktopWidget().availableGeometry()
@@ -74,12 +77,10 @@ class MainWindow (QtGui.QWidget):
             if int(alarm.get('hour')) == int(currentHour) and int(alarm.get('minute')) == int(currentMinute):
                 # QtCore.QObject.emit(self, QtCore.SIGNAL("alarm_on"))
                 self.bombed.emit()
-            else:
-                print("wait")
 
     def boom(self):
         self.surpriseDialog.boom()
-        # print("oke")
+        print("boombing")
         pass
 
     def prepareButtons(self):
