@@ -2,6 +2,8 @@ from PySide import QtGui
 
 class AlarmList:
 
+    currentActiveAlarmIndex = 0
+
     def __init__(self, qWidget):
         self.qWidget = qWidget
         self.prepareData()
@@ -19,7 +21,8 @@ class AlarmList:
 
         self.listAlarms.append({
             'hour': hour,
-            'minute': minute
+            'minute': minute,
+            'dismissed': False
         })
 
         newLabel = QtGui.QLabel(str(hour) + ":" + str(minute), self.qWidget)
@@ -37,3 +40,12 @@ class AlarmList:
             self.emptyLabel.setVisible(False)
 
         # self.qWidget.repaint()
+
+    def setCurrentActiveAlarmIndex(self, index):
+        self.currentActiveAlarmIndex = index
+
+    def getCurrentActiveAlarmIndex(self):
+        return self.currentActiveAlarmIndex
+
+    def dismissAlarm(self):
+        self.listAlarms[self.getCurrentActiveAlarmIndex()].update({'dismissed': True})

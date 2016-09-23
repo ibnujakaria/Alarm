@@ -8,6 +8,7 @@ import threading, time
 class MainWindow (QtGui.QWidget):
 
     bombed = QtCore.Signal()
+    dismissed = QtCore.Signal()
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -29,6 +30,7 @@ class MainWindow (QtGui.QWidget):
         self.surpriseDialog = SurpriseDialog(self)
 
         self.bombed.connect(self.boom)
+        self.dismissed.connect(self.dismissAlarm)
 
         try:
             self.thread = threading.Thread(target=self.updateClock)
@@ -65,18 +67,18 @@ class MainWindow (QtGui.QWidget):
         print("closing...")
 
     def checkTheAlarmIsComing(self):
+        index = 0 # i want to know the current index of the alarm
         for alarm in self.alarmList.listAlarms:
             currentHour = self.penampilWaktu.getHour()
             currentMinute = self.penampilWaktu.getMinute()
 
-            # print('alarm\t-> ' + alarm.get('hour'))
-            # print('now\t\t-> ' + str(currentHour))
-            # print('alarm\t-> ' + alarm.get('minute'))
-            # print('now\t\t-> ' + str(currentMinute))
-
-            if int(alarm.get('hour')) == int(currentHour) and int(alarm.get('minute')) == int(currentMinute):
-                # QtCore.QObject.emit(self, QtCore.SIGNAL("alarm_on"))
+            if int(alarm.get('hour')) == int(currentHour) and int(alarm.get('minute')) == int(currentMinute)\
+                    and alarm.get('dismissed') is not True:
                 self.bombed.emit()
+                self.alarmList.setCurrentActiveAlarmIndex(index)
+
+            index = index + 1
+
 
     def boom(self):
         self.surpriseDialog.boom()
@@ -99,3 +101,6 @@ class MainWindow (QtGui.QWidget):
 
     def closeEvent(self, event):
         self.live = False
+
+    def dismissAlarm(self):
+        self.alarmList.dismissAlarm()
