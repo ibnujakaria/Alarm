@@ -9,6 +9,7 @@ class MainWindow (QtGui.QWidget):
 
     bombed = QtCore.Signal()
     dismissed = QtCore.Signal()
+    clockSignal = QtCore.Signal()
 
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -31,9 +32,10 @@ class MainWindow (QtGui.QWidget):
 
         self.bombed.connect(self.boom)
         self.dismissed.connect(self.dismissAlarm)
+        self.clockSignal.connect(self.updateClock)
 
         try:
-            self.thread = threading.Thread(target=self.updateClock)
+            self.thread = threading.Thread(target=self.threadUpdateClock)
             self.thread.start()
         except:
             print("Some erros on thread.")
@@ -54,17 +56,20 @@ class MainWindow (QtGui.QWidget):
         self.clockLabel.display(self.penampilWaktu.getWaktuBiasa())
         self.clockLabel.resize(400, 100)
 
-    def updateClock(self):
+    def threadUpdateClock(self):
         while self.live:
-            self.clockLabel.display(self.penampilWaktu.getWaktuBiasa())
-            self.setToolTip(self.penampilWaktu.getStringOfWaktu())
-            self.setWindowTitle("Alarm - " + self.penampilWaktu.getWaktuBiasa())
-
-            # check if the alarm is coming
-            self.checkTheAlarmIsComing()
+            self.clockSignal.emit()
             time.sleep(1)
 
         print("closing...")
+
+    def updateClock(self):
+        self.clockLabel.display(self.penampilWaktu.getWaktuBiasa())
+        self.setToolTip(self.penampilWaktu.getStringOfWaktu())
+        self.setWindowTitle("Alarm - " + self.penampilWaktu.getWaktuBiasa())
+
+        # check if the alarm is coming
+        self.checkTheAlarmIsComing()
 
     def checkTheAlarmIsComing(self):
         index = 0 # i want to know the current index of the alarm
@@ -82,7 +87,6 @@ class MainWindow (QtGui.QWidget):
 
     def boom(self):
         self.surpriseDialog.boom()
-        print("boombing")
         pass
 
     def prepareButtons(self):
