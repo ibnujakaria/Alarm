@@ -23,13 +23,13 @@ class ActionButtons():
         # self.btnIndicator.clicked.connect(self.qWidget.toggleAlarm)
 
         self.btnAddAlarm = QtGui.QPushButton(self.icons.get('alarmAdd'), "", self.qWidget)
-        self.btnAddAlarm.move(350, 110)
+        self.btnAddAlarm.move(350, 130)
         self.btnAddAlarm.setToolTip("Add a new alarm")
         self.btnAddAlarm.clicked.connect(self.qWidget.addNewAlarm)
         self.toggleAlarm()
 
         self.btnSetting = QtGui.QPushButton("", self.qWidget)
-        self.btnSetting.move(350, 142)
+        self.btnSetting.move(350, 162)
         self.btnSetting.clicked.connect(self.qWidget.openSettingDialog)
         self.btnSetting.setIcon(self.icons.get('settings'))
 
@@ -52,7 +52,7 @@ class ActionButtons():
 
         if addAlarmDialog.result():
             value = addAlarmDialog.getValue()
-            self.qWidget.alarmList.addNewAlarm(value[0], value[1])
+            self.qWidget.alarmList.addNewAlarm(value[0], value[1], value[2])
 
     def openSettingDialog(self):
         settingDialog = SettingDialog(self.qWidget)

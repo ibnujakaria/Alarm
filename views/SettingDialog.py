@@ -51,5 +51,10 @@ class SettingDialog(QtGui.QDialog):
         pass
 
     def getValue(self):
-        return self.comboHour.currentText(), self.comboMinute.currentText(), self.comboAmPm.currentText()
+        amOrPm = None
+
+        if  self.parent().getMode() is 1:
+            amOrPm = self.comboAmPm.currentText()
+
+        return self.comboHour.currentText(), self.comboMinute.currentText(), amOrPm
 

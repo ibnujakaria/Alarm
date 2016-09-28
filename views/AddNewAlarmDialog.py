@@ -53,8 +53,8 @@ class AddNewAlarmDialog(QtGui.QDialog):
 
             self.comboMinute.addItem(str(i), int(i))
 
-        self.comboHour.setCurrentIndex(self.parent().penampilWaktu.getHour() - 1)
-        self.comboMinute.setCurrentIndex(self.parent().penampilWaktu.getMinute() - 1)
+        self.comboHour.setCurrentIndex(self.parent().penampilWaktu.getHour())
+        self.comboMinute.setCurrentIndex(self.parent().penampilWaktu.getMinute())
 
 
     def prepareFooterButtons(self):
@@ -77,4 +77,9 @@ class AddNewAlarmDialog(QtGui.QDialog):
         pass
 
     def getValue(self):
-        return self.comboHour.currentText(), self.comboMinute.currentText(), self.comboAmPm.currentText()
+        amOrPm = None
+
+        if self.parent().getMode() is 1:
+            amOrPm = self.comboAmPm.currentText()
+
+        return self.comboHour.currentText(), self.comboMinute.currentText(), amOrPm

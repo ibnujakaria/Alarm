@@ -20,7 +20,7 @@ class MainWindow (QtGui.QWidget):
 
     def prepareUI(self):
         self.setWindowIcon(QtGui.QIcon("assets/ic_access_alarm_black_24dp_1x.png"))
-        self.setFixedSize(400, 180)
+        self.setFixedSize(400, 200)
         self.settingPosition()
         self.prepareDigitalClock()
         self.prepareButtons()
@@ -119,6 +119,8 @@ class MainWindow (QtGui.QWidget):
 
     def setMode(self, mode):
         self.mode = mode
+        print(self.penampilWaktu.periksaAmPm())
+        self.alarmList.updateLabelDoToTheFormatChange(mode)
 
     def getMode(self):
         return self.mode
