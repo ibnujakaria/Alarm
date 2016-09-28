@@ -41,6 +41,14 @@ class MenampilkanWaktu():
 
 		return waktu
 
+	def periksaAmPm(self):
+		if self.waktu_sekarang.hour < 12:
+			format = 'AM'
+		else:
+			format = 'PM'
+
+		return format
+
 	def getWaktuBiasa(self, mode = 0):
 		self.waktu_sekarang = datetime.now()
 
@@ -49,7 +57,7 @@ class MenampilkanWaktu():
 		if jam > 12 and mode is 1:
 			jam = jam - 12
 
-		jam = str(self.waktu_sekarang.hour)
+		jam = str(jam)
 		menit = str(self.waktu_sekarang.minute)
 		detik = str(self.waktu_sekarang.second)
 

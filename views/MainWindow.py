@@ -66,7 +66,12 @@ class MainWindow (QtGui.QWidget):
     def updateClock(self):
         self.clockLabel.display(self.penampilWaktu.getWaktuBiasa(self.mode))
         self.setToolTip(self.penampilWaktu.getStringOfWaktu(self.mode))
-        self.setWindowTitle("Alarm - " + self.penampilWaktu.getWaktuBiasa(self.mode))
+
+        title = "Alarm - " + self.penampilWaktu.getWaktuBiasa(self.mode)
+        if  self.getMode() is 1:
+            title = title + " " + self.penampilWaktu.periksaAmPm()
+
+        self.setWindowTitle(title)
 
         # check if the alarm is coming
         self.checkTheAlarmIsComing()
