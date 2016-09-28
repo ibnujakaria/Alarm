@@ -64,9 +64,9 @@ class MainWindow (QtGui.QWidget):
         print("closing...")
 
     def updateClock(self):
-        self.clockLabel.display(self.penampilWaktu.getWaktuBiasa())
-        self.setToolTip(self.penampilWaktu.getStringOfWaktu())
-        self.setWindowTitle("Alarm - " + self.penampilWaktu.getWaktuBiasa())
+        self.clockLabel.display(self.penampilWaktu.getWaktuBiasa(self.mode))
+        self.setToolTip(self.penampilWaktu.getStringOfWaktu(self.mode))
+        self.setWindowTitle("Alarm - " + self.penampilWaktu.getWaktuBiasa(self.mode))
 
         # check if the alarm is coming
         self.checkTheAlarmIsComing()
@@ -108,3 +108,12 @@ class MainWindow (QtGui.QWidget):
 
     def dismissAlarm(self):
         self.alarmList.dismissAlarm()
+
+    def openSettingDialog(self):
+        self.actionButton.openSettingDialog()
+
+    def setMode(self, mode):
+        self.mode = mode
+
+    def getMode(self):
+        return self.mode

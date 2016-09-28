@@ -5,12 +5,17 @@ from cores.AngkaTerbilang import AngkaTerbilang
 
 class MenampilkanWaktu():
 
-	def getStringOfWaktu(self):
+	def getStringOfWaktu(self, mode = 0):
 
 		self.waktu_sekarang = datetime.now()
 		# angka = int(input('masukkan angka -> '))
 		# print(AngkaTerbilang(angka).bacaAngka())
-		jam_terbilang = AngkaTerbilang(self.waktu_sekarang.hour).bacaAngka()
+		jam = self.waktu_sekarang.hour
+
+		if jam > 12 and mode is 1:
+			jam = jam - 12
+
+		jam_terbilang = AngkaTerbilang(jam).bacaAngka()
 		menit_terbilang = AngkaTerbilang(self.waktu_sekarang.minute).bacaAngka()
 
 		sambungan = 'lebih '
@@ -36,8 +41,13 @@ class MenampilkanWaktu():
 
 		return waktu
 
-	def getWaktuBiasa(self):
+	def getWaktuBiasa(self, mode = 0):
 		self.waktu_sekarang = datetime.now()
+
+		jam = self.waktu_sekarang.hour
+
+		if jam > 12 and mode is 1:
+			jam = jam - 12
 
 		jam = str(self.waktu_sekarang.hour)
 		menit = str(self.waktu_sekarang.minute)

@@ -34,16 +34,21 @@ class AddNewAlarmDialog(QtGui.QDialog):
         self.comboAmPm.resize(60, 40)
         self.comboAmPm.move(190, 40)
         self.comboAmPm.addItems(['AM', 'PM'])
-        self.comboAmPm.setDisabled(not bool(self.parent().mode))
+        self.comboAmPm.setDisabled(not bool(self.parent().getMode()))
         self.labelAmPm = QtGui.QLabel("AM/PM", self)
         self.labelAmPm.move(190, 15)
         self.labelAmPm.resize(self.labelAmPm.sizeHint())
 
-        for i in range(1, 60):
+        limitHour = 24
+
+        if self.parent().getMode() is 1:
+            limitHour = 12
+
+        for i in range(0, 60):
             if  i < 10:
                 i = "0" + str(i)
 
-            if int(i) < 24:
+            if int(i) <= limitHour:
                 self.comboHour.addItem(str(i), int(i))
 
             self.comboMinute.addItem(str(i), int(i))
