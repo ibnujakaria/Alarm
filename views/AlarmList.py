@@ -63,11 +63,24 @@ class AlarmList:
         newRemoveButton.setIcon(self.icons.get('remove'));
         newRemoveButton.move(140, 110 + (30 * (len(self.listAlarms) - 1)))
         newRemoveButton.alarm = alarm
+        newRemoveButton.clicked.connect(lambda: self.removeAlarm(alarm, newRemoveButton))
         newRemoveButton.show()
         self.listButtonRemoveAlarms.append(newRemoveButton)
 
         print("new alarm added")
         self.displayList() # this will update the list displayed
+
+    def rearrangeAlarmLists(self):
+        for i in range(len(self.listAlarms)):
+            alarm = self.listAlarms[i]
+            label = self.listLabelAlarms[i]
+            buttonRemove = self.listButtonRemoveAlarms[i]
+            buttonDismiss = self.listButtonDismissAlarms[i]
+
+            label.move(10, 113 + (30 * (i - 1)))
+            buttonRemove.move(10, 113 + (30 * (i - 1)))
+            buttonDismiss.move(10, 113 + (30 * (i - 1)))
+
 
     def displayList(self):
         if len(self.listAlarms) < 1:
@@ -116,4 +129,14 @@ class AlarmList:
             self.listAlarms[index].update({'dismissed': True})
 
     def setAlarmOn(self, index = None):
-            self.listAlarms[index].update({'dismissed': False})
+        self.listAlarms[index].update({'dismissed': False})
+
+    def removeAlarm(self, alarm, button):
+        index = self.listAlarms.index(alarm)
+        # remove alarm from list
+        del self.listAlarms[index]
+        del self.listButtonDismissAlarms[index]
+        del self.listButtonRemoveAlarms[index]
+        del self.listLabelAlarms[index]
+
+        self.rearrangeAlarmLists()

@@ -3,6 +3,7 @@ from cores import MenampilkanWaktu, AngkaTerbilang
 from .AlarmList import AlarmList
 from .ActionButtons import ActionButtons
 from .SurpriseDialog import SurpriseDialog
+from .SystemTrayIcon import SystemTrayIcon
 import threading, time
 
 class MainWindow (QtGui.QWidget):
@@ -17,6 +18,7 @@ class MainWindow (QtGui.QWidget):
         self.live = True
         self.mode = 0 # 0 for 24 hours, and 1 for 12 hours
         self.prepareUI()
+        self.prepareSystemTray()
 
     def prepareUI(self):
         self.setWindowIcon(QtGui.QIcon("assets/ic_access_alarm_black_24dp_1x.png"))
@@ -39,6 +41,10 @@ class MainWindow (QtGui.QWidget):
             self.thread.start()
         except:
             print("Some erros on thread.")
+
+    def prepareSystemTray(self):
+        self.systemTray = SystemTrayIcon(self)
+        self.systemTray.show()
 
     def settingPosition(self):
         desktopGeometry = QtGui.QDesktopWidget().availableGeometry()
@@ -109,7 +115,11 @@ class MainWindow (QtGui.QWidget):
         self.actionButton.addNewAlarm()
 
     def closeEvent(self, event):
-        self.live = False
+        # self.live = False
+        if self.live is True:
+            event.ignore()
+            self.hide()
+            self.systemTray.greet()
 
     def dismissAlarm(self):
         self.alarmList.dismissAlarm()
